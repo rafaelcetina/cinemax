@@ -7,6 +7,7 @@ package Controlador;
 
 import Modelo.ModeloPeliculas;
 import Modelo.Conexion;
+import Servlet.SVerImagen;
 import include.Pelicula;
 import java.awt.Image;
 import java.io.FileOutputStream;
@@ -43,7 +44,7 @@ public class ControladorPeliculas {
             htmlcode+=
             "<li>\n" +
 "               <a href=\"comprar.jsp?id= "+ p.getId() +" \">\n" +
-"                   <img src= '' alt=\"\" class=\"cover\" />\n" +
+"                   <img src= "+"SVerImagen?id="+p.getId()+"  alt=\"\" class=\"cover\" />\n" +
 "                   <p class=\"title\">"+ p.getTitulo() +"</p>\n" +
 "                   <p class=\"genre\">"+ p.getGenero() +"</p>\n" +
 "               </a>\n" +
@@ -137,7 +138,7 @@ public class ControladorPeliculas {
 "        <td data-th=\"Año\"> "+ p.getAnio() +" </td>" +
 "        <td data-th=\"Director\">"+ p.getDirector() +"</td>" +
 "        <td data-th=\"Imagen\"><a href=\"mostrarImagen.jsp?id="+ p.getId() +"\">\n"+
-"                <img src=\"img/lupa.gif\" width=\"16\" height=\"16\"  border=\"0\" />\n" +
+"                <img src="+"SVerImagen?id="+p.getId()+" width=\"32\" height=\"50\"  border=\"0\" />\n" +
 "                </a></td>" +
 "        <td data-th=\"Acciones\"><a id='btn-eliminar' class='btn btn-red' href=\"\"><i class='fa fa-trash-o'></i></a>"+
 "        <a id='btn-modificar' class='btn btn-blue'  href='modificar.jsp?id="+p.getId()+"'><i class='fa fa-edit'></i></a></td>"+

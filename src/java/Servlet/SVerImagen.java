@@ -1,117 +1,111 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Servlet;
 
-import Controlador.ControladorPeliculas;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
-import org.apache.tomcat.util.codec.binary.Base64;
 
-/**
- *
- * @author CETINA
- */
 public class SVerImagen extends HttpServlet {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException,
+      ServletException {
+    Blob photo = null;
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    int id = Integer.parseInt(request.getParameter("id"));
+    //id = 3;
+    String query = "select poster from peliculas where  id_pelicula = '"+id+"' ";
+    ServletOutputStream out = response.getOutputStream();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        //response.setContentType("image/jpeg");
-        try {
-        HttpSession sesion=request.getSession();
-        //response.setContentType("image/jpg");
-        
-        ControladorPeliculas p = new ControladorPeliculas();
-        
-        String idPelicula = String.valueOf(sesion.getAttribute("codigoPelicula"));
-        
-        int idPeli = Integer.parseInt(idPelicula);
-        
-        //System.out.println(idPeli);
-        
-        byte[] imag = p.obtenImagenPelicula(idPeli);
-        if (imag != null) {
-            ServletOutputStream out2 = response.getOutputStream();
-            
-            
-            
-            byte[] base = Base64.encodeBase64(imag);
-            
-            String cadena = new String(base, "UTF-8");
-            
-            System.out.println(cadena);
-            
-            out2.print(cadena);
-            
-            
-            
-            JOptionPane.showMessageDialog(null,"imagen encontrada");
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"Else Null");
-        }
-        }catch(Exception ex)
-        {
-            JOptionPane.showMessageDialog(null,"Error"+ex);
-        }
+    try {
+      conn = getMySqlConnection();
+    } catch (Exception e) {
+      response.setContentType("text/html");
+      out.println("<html><head><title>Person Photo</title></head>");
+      out.println("<body><h1>Database Connection Problem.</h1></body></html>");
+      return;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+    try {
+      stmt = conn.createStatement();
+      rs = stmt.executeQuery(query);
+      if (rs.next()) {
+        photo = rs.getBlob(1);
+      } else {
+        response.setContentType("text/html");
+        out.println("<html><head><title>Person Photo</title></head>");
+        out.println("<body><h1>No photo found for id= 001 </h1></body></html>");
+        return;
+      }
+      response.setContentType("image/jpeg");
+      InputStream in = photo.getBinaryStream();
+      int length = (int) photo.length();
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+      int bufferSize = 1024;
+      byte[] buffer = new byte[bufferSize];
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+      while ((length = in.read(buffer)) != -1) {
+        System.out.println("writing " + length + " bytes");
+        out.write(buffer, 0, length);
+      }
+
+      in.close();
+      out.flush();
+    } catch (SQLException e) {
+      response.setContentType("text/html");
+      out.println("<html><head><title>Error: Person Photo</title></head>");
+      out.println("<body><h1>Error=" + e.getMessage() + "</h1></body></html>");
+      return;
+    } finally {
+      try {
+        rs.close();
+        stmt.close();
+        conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private static Connection getHSQLConnection() throws Exception {
+    Class.forName("org.hsqldb.jdbcDriver");
+    System.out.println("Driver Loaded.");
+    String url = "jdbc:hsqldb:data/tutorial";
+    return DriverManager.getConnection(url, "sa", "");
+  }
+
+  public static Connection getMySqlConnection() throws Exception {
+    String driver = "org.gjt.mm.mysql.Driver";
+    String url = "jdbc:mysql://localhost/cine";
+    String username = "root";
+    String password = "";
+
+    Class.forName(driver);
+    Connection conn = DriverManager.getConnection(url, username, password);
+    return conn;
+  }
+
+  public static Connection getOracleConnection() throws Exception {
+    String driver = "oracle.jdbc.driver.OracleDriver";
+    String url = "jdbc:oracle:thin:@localhost:1521:databaseName";
+    String username = "username";
+    String password = "password";
+
+    Class.forName(driver); // load Oracle driver
+    Connection conn = DriverManager.getConnection(url, username, password);
+    return conn;
+  }
 
 }
+
+   

@@ -45,6 +45,7 @@
           <!--<input type="text" placeholder="Url de poster" name="poster">-->
           <input type="text" placeholder="Idioma" name="idioma">
           <input type="text" placeholder="Genero" name="genero">
+          <input type="file" name="poster"/>
         
       </div>  
       <input type="submit" value="Enviar" id="input-submit">

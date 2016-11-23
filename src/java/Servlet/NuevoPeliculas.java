@@ -41,7 +41,7 @@ public class NuevoPeliculas extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        response.setContentType("text/html;charset=UTF-8");
-        
+       
        String titulo, anio, rated, fecha_lanz, duracion, director, actores, poster, idioma, genero;
        
        titulo= new String(request.getParameter("titulo").getBytes("ISO-8859-1"),"UTF-8");
@@ -60,8 +60,9 @@ public class NuevoPeliculas extends HttpServlet {
        
        //FileInputStream is = new FileInputStream("C:\\Users\\CETINA\\Desktop\\IMAGENES\\mickey.jpg");
        
-       //poster= new String(request.getParameter("poster").getBytes("ISO-8859-1"),"UTF-8");
-       poster = "hola";
+       poster= new String(request.getParameter("poster").getBytes("ISO-8859-1"),"UTF-8");
+       //poster = request.getParameter("poster");
+       //poster = "hola";
        idioma= new String(request.getParameter("idioma").getBytes("ISO-8859-1"),"UTF-8");
        
        genero= new String(request.getParameter("genero").getBytes("ISO-8859-1"),"UTF-8");

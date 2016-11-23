@@ -27,7 +27,8 @@ public class ModeloPeliculas extends Conexion{
             String sql = "call insertPelicula(?,?,?,?,?,?,?,?,?,?)";
             
             //String inputFile = "c:\\entrada\\entrada.txt";
-            File imagen = new File("c:\\img\\c4.jpg");
+            //File imagen = new File("c:\\img\\c1.jpg");
+            File imagen = new File(p.getPoster());
             //ruta puede ser: "/home/cmop/Desktop/1.jpg"
             FileInputStream   fis = new FileInputStream(imagen);
             //Lo convertimos en un Stream
@@ -43,8 +44,8 @@ public class ModeloPeliculas extends Conexion{
             pst.setString(6, p.getDirector());
             pst.setString(7, p.getActores());
             //pst.setString(8, p.getPoster());
-            //pst.setBinaryStream(8, fis, (int) imagen.length());
-            pst.setBlob(8, fis);
+            pst.setBinaryStream(8, fis, (int) imagen.length());
+            //pst.setBlob(8, fis);
             pst.setString(9, p.getIdioma());
             pst.setString(10, p.getGenero());
             
