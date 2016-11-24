@@ -1,6 +1,13 @@
 <%@page import="Controlador.ControladorPeliculas"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+    if ((session.getAttribute("usuario") == null) || (session.getAttribute("usuario") == "")) {
+%>
+<script>
+   location.href="login.jsp";
+</script>
+<%} else {
+%>
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
@@ -27,11 +34,20 @@
   
 <body>
     <h1>Lista de Peliculas en Cartelera</h1>
-    <a href="crearpelicula.jsp">
-        <button class="mi_btn btn-add">
-            <span class="text">Añadir pelicula</span>
-        </button>
-    </a>
+    
+    <button class="mi_btn btn-add">
+        <a href="crearpelicula.jsp">
+        <span class="text">Añadir pelicula</span>
+        </a>
+    </button>
+
+
+    <button class="mi_btn btn-add">
+        <a href="register.jsp">
+        <span class="text">Registrar usuarios</span>
+        </a>
+    </button>
+    
    
     <table class="rwd-table">
       <tr>
@@ -46,8 +62,12 @@
       <%= cp.getPanelView() %> 
     </table>
 
-    <p>&larr; Hola administrador, no me jakees plx &rarr;</p>
+      <p>&larr; Hola <b><%=session.getAttribute("usuario")%></b>
+    <a href='logout.jsp'>Cerrar sesión</a> &rarr;</p>
     <p> <a href="index.jsp"><button class="mi_btn btn-home"><span class="text"><i class="fa fa-home"></i> Inicio</span></button></a> </p>
 
 </body>
 </html>
+<%
+    }
+%>

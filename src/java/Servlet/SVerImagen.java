@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Modelo.Conexion;
+
 public class SVerImagen extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException,
       ServletException {
@@ -28,7 +30,11 @@ public class SVerImagen extends HttpServlet {
     ServletOutputStream out = response.getOutputStream();
 
     try {
-      conn = getMySqlConnection();
+      
+      //conn = getMySqlConnection();
+      Conexion conexion = new Conexion();
+      conn = conexion.getConnection();
+      
     } catch (Exception e) {
       response.setContentType("text/html");
       out.println("<html><head><title>Person Photo</title></head>");
@@ -76,7 +82,7 @@ public class SVerImagen extends HttpServlet {
       }
     }
   }
-
+/*
   private static Connection getHSQLConnection() throws Exception {
     Class.forName("org.hsqldb.jdbcDriver");
     System.out.println("Driver Loaded.");
@@ -105,7 +111,7 @@ public class SVerImagen extends HttpServlet {
     Connection conn = DriverManager.getConnection(url, username, password);
     return conn;
   }
-
+*/
 }
 
    

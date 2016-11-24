@@ -43,7 +43,7 @@ public class ControladorPeliculas {
         
             htmlcode+=
             "<li>\n" +
-"               <a href=\"comprar.jsp?id= "+ p.getId() +" \">\n" +
+"               <a href=\"detalles.jsp?id= "+ p.getId() +" \">\n" +
 "                   <img src= "+"SVerImagen?id="+p.getId()+"  alt=\"\" class=\"cover\" />\n" +
 "                   <p class=\"title\">"+ p.getTitulo() +"</p>\n" +
 "                   <p class=\"genre\">"+ p.getGenero() +"</p>\n" +

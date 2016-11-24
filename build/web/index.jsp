@@ -70,11 +70,19 @@
                             <div class="line"></div>
                         </li>
                         <li><a href="#">Peliculas</a></li>
-                        <li><a href="#">Reservaciones</a></li>
                         <li class="active"><a href="#">Cartelera</a></li>
                         <li><a href="#">Usuarios Top</a></li>
                         <li><a href="#">Tiendita</a></li>
-                        <li><a href="administracion.jsp">Iniciar Sesión</a></li>
+                        <%
+                            if ((session.getAttribute("usuario") == null) || (session.getAttribute("usuario") == "")) {
+                        %>
+                        <li><a href="login.jsp">Iniciar Sesión</a></li>
+                        <%} else {
+                        %>
+                        <li><a href="administracion.jsp">Administración</a></li>
+                        
+                        <% } 
+                        %>
                     </ul>
 
                 </div> <!-- top bar -->
