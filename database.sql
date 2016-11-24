@@ -11,6 +11,11 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+
+-- Volcando estructura de base de datos para cine
+CREATE DATABASE IF NOT EXISTS `cine` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `cine`;
+
 -- Volcando estructura para procedimiento cine.deletePelicula
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePelicula`(
@@ -55,9 +60,9 @@ CREATE TABLE IF NOT EXISTS `peliculas` (
   `idioma` varchar(100) COLLATE utf8_bin NOT NULL,
   `genero` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id_pelicula`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- Volcando datos para la tabla cine.peliculas: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla cine.peliculas: ~4 rows (aproximadamente)
 DELETE FROM `peliculas`;
 /*!40000 ALTER TABLE `peliculas` DISABLE KEYS */;
 INSERT INTO `peliculas` (`id_pelicula`, `titulo`, `anio`, `rated`, `fecha_lanz`, `duracion`, `director`, `actores`, `poster`, `idioma`, `genero`) VALUES
@@ -74,6 +79,25 @@ BEGIN
 	SELECT * FROM peliculas;
 END//
 DELIMITER ;
+
+-- Volcando estructura para tabla cine.usuarios
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `usuario` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `fecha_alta` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla cine.usuarios: ~2 rows (aproximadamente)
+DELETE FROM `usuarios`;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` (`id`, `nombre`, `email`, `usuario`, `password`, `fecha_alta`) VALUES
+	(1, 'RODOLFO RAFAEL DZUL CETINA', 'rafael.cetina@hotmail.com', 'rcetina', 'rafael123', '2016-11-24'),
+	(2, 'Angel Arturo Saldivar Balam', 'arturinho_99@hotmail.com', 'asaldivar', 'pomada', '2016-11-24');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
