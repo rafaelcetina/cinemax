@@ -89,7 +89,7 @@
 
 
                 <div class="featured-movie">
-                    <img class="cover" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/22043/backdrop_ggwxvq_1.jpg" alt="" class="cover" />
+                    <img class="cover" src="img/font.jpg" alt="" class="cover" />
                     <p class="corner-title">Recomendación</p>
 
                     <div class="bottom-bar">
@@ -128,7 +128,7 @@
                     </div> <!-- title-bar -->
 
                     <ul class="list">
-                        <%ControladorPeliculas cp = new ControladorPeliculas();%>
+                        <% ControladorPeliculas cp = new ControladorPeliculas();%>
                         <%= cp.getViewPeliculas()%> 
                     </ul>
 

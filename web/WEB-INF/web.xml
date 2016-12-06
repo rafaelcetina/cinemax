@@ -20,6 +20,18 @@
         <servlet-name>SVerImagen</servlet-name>
         <servlet-class>Servlet.SVerImagen</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Tickets</servlet-name>
+        <servlet-class>Servlet.Tickets</servlet-class>
+        <init-param>
+            <param-name>nombre</param-name>
+            <param-value>No especificado</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>insertarPelicula</servlet-name>
+        <servlet-class>Servlet.insertarPelicula</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CrearPelicula</servlet-name>
         <url-pattern>/CrearPelicula</url-pattern>
@@ -39,6 +51,14 @@
     <servlet-mapping>
         <servlet-name>SVerImagen</servlet-name>
         <url-pattern>/SVerImagen</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Tickets</servlet-name>
+        <url-pattern>/tickets</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertarPelicula</servlet-name>
+        <url-pattern>/insertarPelicula</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

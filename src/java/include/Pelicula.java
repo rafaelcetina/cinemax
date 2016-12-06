@@ -14,7 +14,7 @@ public class Pelicula {
     
     private int id;
     private String titulo;
-    private String anio;
+    private String descripcion;
     private String rated;
     private String fecha_lanz;
     private String duracion;
@@ -27,10 +27,10 @@ public class Pelicula {
     public Pelicula() {
     }
 
-    public Pelicula(int id, String titulo, String anio, String rated, String fecha_lanz, String duracion, String director, String actores, String poster, String idioma, String genero) {
+    public Pelicula(int id, String titulo, String descripcion, String rated, String fecha_lanz, String duracion, String director, String actores, String poster, String idioma, String genero) {
         this.id = id;
         this.titulo = titulo;
-        this.anio = anio;
+        this.descripcion = descripcion;
         this.rated = rated;
         this.fecha_lanz = fecha_lanz;
         this.duracion = duracion;
@@ -57,12 +57,12 @@ public class Pelicula {
         this.titulo = titulo;
     }
 
-    public String getAnio() {
-        return anio;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setAnio(String anio) {
-        this.anio = anio;
+    public void setAnio(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getRated() {

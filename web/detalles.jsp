@@ -3,16 +3,29 @@
     Created on : 24/11/2016, 12:38:08 PM
     Author     : GERENTE COMERCIAL
 --%>
-
+<%@page import="Modelo.ModeloPeliculas"%>
+<%@page import="include.Pelicula"%>
+<%
+    int id = Integer.parseInt(request.getParameter("id"));
+    Pelicula pr = new ModeloPeliculas().getPelicula(id);
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Detalle de Pelicula :: Cine Max</title>
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/detalles.css">
+        <style>
+            .movie-background--martian {
+                background: url("SVerImagen?id=<%=id%>") no-repeat;
+                background-position: top center;
+                background-size: cover;
+            }
+        </style>
     </head>
+    
     <body>
         <article class="cinema-app">
             
@@ -45,11 +58,21 @@
 
 			<div class="movie-description">
 
-				<h1 class="movie-description__title">Animales Fantásticos y Donde Encontrarlos</h1>
+                            <h1 class="movie-description__title">
+                                <% if(pr.getTitulo().length() >= 23 ){
+                                    out.print(pr.getTitulo().substring(0, 23)+"...");
+                                }else{
+                                    out.print(pr.getTitulo());
+                                }
+                                %>
+                            </h1>
 				<!-- /.movie-description__title -->
 
 				<p class="movie-description__copy">
-					Adaptación del libro homónimo de J.K. Rowling, un spin-off que amplía el mundo de la saga Harry Potter desde el punto de vista de Newt Scamander, un mago a quien le encargan...
+                                        <% if(pr.getDescripcion().length() >= 170 ){ %>
+					<%=pr.getDescripcion().substring(0, 170)%>...
+                                        <% }else{ %>
+                                        <% out.print(pr.getDescripcion()); }%>
 				</p>
 				<!-- /.movie-description__copy -->
 
@@ -80,7 +103,7 @@
 						<li class="movie-options-list__item movie-options-list__item--has-children js-top-level">
 
 							<input type="checkbox" class="movie-options__checkbox" name="movie-options-group-1">
-							<label class="movie-options-list__label js-label" for="movie-options-group-1">Movie Type</label>
+							<label class="movie-options-list__label js-label" for="movie-options-group-1">Tipo de Sala</label>
 
 							<ul class="movie-options-sub-list">
 
@@ -104,7 +127,7 @@
 						<li class="movie-options-list__item movie-options-list__item--has-children js-top-level">
 
 							<input type="checkbox" class="movie-options__checkbox" name="movie-options-group-1">
-							<label class="movie-options-list__label movie-options-list__label--time js-label" for="movie-options-group-1">Movie Time</label>
+							<label class="movie-options-list__label movie-options-list__label--time js-label" for="movie-options-group-1">Horario</label>
 
 							<ul class="movie-options-sub-list">
 
@@ -162,13 +185,13 @@
 						<li class="movie-options-list__item movie-options-list__item--has-children js-top-level">
 
 							<input type="checkbox" class="movie-options__checkbox" name="movie-options-group-3">
-							<label class="movie-options-list__label js-label" for="movie-options-group-3">Number of Tickets</label>
+							<label class="movie-options-list__label js-label" for="movie-options-group-3">Número de entradas</label>
 
 							<ul class="movie-options-sub-list movie-options-sub-list--select">
 
 								<li class="movie-options-sub-list__item">
 
-									<label for="adult" class="quantity__label">Adult</label>
+									<label for="adult" class="quantity__label">Adulto</label>
 
 									<select class="quantity" name="adult">
 
@@ -188,7 +211,7 @@
 
 									<span class="operator">&times;</span>
 
-									<span class="quantity__amount">&dollar;10.00</span>
+									<span class="quantity__amount">&dollar;60.00</span>
 
 									<span class="operator">&equals;</span>
 
@@ -199,7 +222,7 @@
 
 								<li class="movie-options-sub-list__item">
 
-									<label for="adult" class="quantity__label">Senior</label>
+									<label for="adult" class="quantity__label">Adulto Mayor</label>
 
 									<select class="quantity" name="senior">
 
@@ -219,7 +242,7 @@
 
 									<span class="operator">&times;</span>
 
-									<span class="quantity__amount">&dollar;8.00</span>
+									<span class="quantity__amount">&dollar;40.00</span>
 
 									<span class="operator">&equals;</span>
 
@@ -230,7 +253,7 @@
 
 								<li class="movie-options-sub-list__item">
 
-									<label for="adult" class="quantity__label">Child</label>
+									<label for="adult" class="quantity__label">Infante</label>
 
 									<select class="quantity" name="child">
 
@@ -250,7 +273,7 @@
 
 									<span class="operator">&times;</span>
 
-									<span class="quantity__amount">&dollar;7.00</span>
+									<span class="quantity__amount">&dollar;20.00</span>
 
 									<span class="operator">&equals;</span>
 
@@ -280,7 +303,7 @@
 							<div class="legend__available">
 
 								<span class="seat seat--available"></span>
-								<span class="legend__text">Available</span>
+								<span class="legend__text">Disponible</span>
 
 							</div>
 							<!-- /.legend__available -->
@@ -288,7 +311,7 @@
 							<div class="legend__taken">
 
 								<span class="seat seat--taken"></span>
-								<span class="legend__text">Taken</span>
+								<span class="legend__text">Ocupado</span>
 
 							</div>
 							<!-- /.legend__taken -->
@@ -300,78 +323,76 @@
 
 							<div class="chart__column chart__column--2rows chart__column--outside chart__column--outside-left" data-column="1">
 
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-1"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-2"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-3"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-4"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-5"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-6"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-7"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-8"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-9"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-10"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="A-11"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
-								<!-- /.seat seat--available chart__seat js-seat -->
+								<div class="seat seat--available chart__seat js-seat" data-id="A-12"></div>
 
 
 							</div>
-							<!-- /.chart__column chart__column--2rows chart__column--outside -->
 
 							<div class="chart__column chart__column--3rows chart__column--middle" data-column="2">
 
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-1"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-2"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-3"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-4"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-5"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-6"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-7"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-8"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-9"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-10"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-11"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-12"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-13"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-14"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-15"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-16"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-17"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-18"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-19"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-20"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="B-21"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
 
 							</div>
@@ -379,30 +400,29 @@
 
 							<div class="chart__column chart__column--2rows chart__column--outside chart__column--outside-right" data-column="3">
 
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-1"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-2"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-3"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-4"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-5"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-6"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-7"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-8"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-9"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-10"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
+								<div class="seat seat--available chart__seat js-seat" data-id="C-11"></div>
 								<!-- /.seat seat--available chart__seat js-seat -->
-								<div class="seat seat--available chart__seat js-seat"></div>
-								<!-- /.seat seat--available chart__seat js-seat -->
+								<div class="seat seat--available chart__seat js-seat" data-id="C-12"></div>
 
 
 							</div>
@@ -426,7 +446,7 @@
 
 					<span class="checkout__text">Total</span>
 					<span class="js-grand-total checkout__text checkout__text--color-white">$0.00</span>
-					<span class="checkout__button">Checkout</span>
+					<span class="checkout__button">Pagar</span>
 
 				</div>
 				<!-- /.checkout--wrap -->
@@ -441,8 +461,16 @@
 	<!-- /.movie -->
 
     </article>
+    <form action="tickets.jsp" method="post">
+        <input type="hidden" value="<%=pr.getTitulo()%>" name="titulo">
+        <input type="hidden" name="persona" id="persona">
+        <input type="hidden" name="asientos"  id="asientos">
+        <input type="hidden" name="ntickets" id="ntickets">
+        <input type="hidden" name="horario" id="horario">
+        <input type="submit" id="btnTickets" style="display: none">
+    </form>
 <!-- /.cinema-app -->
     </body>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="js/detalles.js"></script>
 </html>

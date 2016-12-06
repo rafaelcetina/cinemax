@@ -321,6 +321,7 @@ a:hover {
 .window .main .movie-list .list li {
   flex: 0 0 130px;
   padding-bottom: 30px;
+  width: 130px;
   margin-right: 20px;
   position: relative;
 }

@@ -42,13 +42,12 @@ public class ControladorPeliculas {
             //byte[] img = poster.getSource()
         
             htmlcode+=
-            "<li>\n" +
-"               <a href=\"detalles.jsp?id= "+ p.getId() +" \">\n" +
-"                   <img src= "+"SVerImagen?id="+p.getId()+"  alt=\"\" class=\"cover\" />\n" +
+                    "<a href=\"detalles.jsp?id="+ p.getId() +" \"><li>"
+                    + "<img src= "+"SVerImagen?id="+p.getId()+"  alt=\"\" class=\"cover\" />\n" +
 "                   <p class=\"title\">"+ p.getTitulo() +"</p>\n" +
 "                   <p class=\"genre\">"+ p.getGenero() +"</p>\n" +
-"               </a>\n" +
-"            </li>";
+"               \n" +
+"            </li></a>";
         }
         return htmlcode;
     }
@@ -77,7 +76,7 @@ public class ControladorPeliculas {
 "				<h3 class=\"m_3\">"+pr.getTitulo()+"</h3>\n" +
 "				\n" +
 "				<div class=\"price_single\">\n" +							  
-"							  <span class=\"actual\">$"+pr.getAnio()+"</span><a href=\"#\">click for offer</a>\n" +
+"							  <span class=\"actual\">$"+pr.getDescripcion()+"</span><a href=\"#\">click for offer</a>\n" +
 "							</div>\n" +
 "				<ul class=\"options\">\n" +
 "					<h4 class=\"m_9\">Select a Size</h4>\n" +
@@ -133,9 +132,11 @@ public class ControladorPeliculas {
         for(Pelicula p : peliculas){
             htmlcode += "<tr>"+
 "        <td id='id_pelicula' style='display:none'>"+ p.getId() +"</td>" +
-"        <td data-th=\"Título\">"+ p.getTitulo() +"</td>" +
+"        <td data-th=\"Título\">"+ 
+                    p.getTitulo()
+                    +"</td>" +
 "        <td data-th=\"Género\">"+ p.getGenero() +"</td>" +
-"        <td data-th=\"Año\"> "+ p.getAnio() +" </td>" +
+"        <td data-th=\"Año\"> "+ p.getDescripcion() +" </td>" +
 "        <td data-th=\"Director\">"+ p.getDirector() +"</td>" +
 "        <td data-th=\"Imagen\"><a href=\"mostrarImagen.jsp?id="+ p.getId() +"\">\n"+
 "                <img src="+"SVerImagen?id="+p.getId()+" width=\"32\" height=\"50\"  border=\"0\" />\n" +
@@ -167,7 +168,7 @@ public class ControladorPeliculas {
 "                </tr>\n" +
 "                <tr>\n" +
 "                    <td><label for=\"\">Descripcion:</label></td>\n" +
-"                    <td><textarea cols=\"30\" rows=\"6\" name=\"descripcion\" id=\"descripcion\">"+pr.getAnio()+"</textarea></td>\n" +
+"                    <td><textarea cols=\"30\" rows=\"6\" name=\"descripcion\" id=\"descripcion\">"+pr.getDescripcion()+"</textarea></td>\n" +
 "                </tr>\n" +
 "                <tr>\n" +
 "                    <td><label for=\"\">Precio:</label></td>\n" +

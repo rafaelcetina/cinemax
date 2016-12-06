@@ -37,7 +37,7 @@ public class ModeloPeliculas extends Conexion{
             
             
             pst.setString(1, p.getTitulo());
-            pst.setString(2, p.getAnio());
+            pst.setString(2, p.getDescripcion());
             pst.setString(3, p.getRated());
             pst.setString(4, p.getFecha_lanz());
             pst.setString(5, p.getDuracion());
@@ -80,7 +80,7 @@ public class ModeloPeliculas extends Conexion{
                 peliculas.add(new Pelicula(
                         rs.getInt("id_pelicula"), 
                         rs.getString("titulo"), 
-                        rs.getString("anio"), 
+                        rs.getString("descripcion"), 
                         rs.getString("rated"), 
                         rs.getString("fecha_lanz"), 
                         rs.getString("duracion"), 
@@ -120,7 +120,7 @@ public class ModeloPeliculas extends Conexion{
             while (rs.next()) {                
                 pelicula = new Pelicula(rs.getInt("id_pelicula"), 
                         rs.getString("titulo"), 
-                        rs.getString("anio"), 
+                        rs.getString("descripcion"), 
                         rs.getString("rated"), 
                         rs.getString("fecha_lanz"), 
                         rs.getString("duracion"), 
@@ -177,7 +177,7 @@ public class ModeloPeliculas extends Conexion{
             pst = getConnection().prepareStatement(sql);            
             pst.setInt(1, p.getId());
             pst.setString(2, p.getTitulo());
-            pst.setString(3, p.getAnio());
+            pst.setString(3, p.getDescripcion());
             pst.setString(4, p.getRated());
             pst.setString(5, p.getFecha_lanz());
             pst.setString(6, p.getDuracion());

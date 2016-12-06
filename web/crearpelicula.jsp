@@ -31,10 +31,10 @@
 <body>
     <h1>Añadir Pelicula a Cartelera</h1>
     <% // if(request.getParameter("ok").contains("1")) { out.print("<h2>Bien! Pelicula insertada correctamente</h2>"); } %>
-    <form class="cf" action="crearpelicula" name="frmnuevo" method="POST" id="frm_nuevo">
+    <form class="cf" action="insertarPelicula" enctype="multipart/form-data" name="frmnuevo" method="POST"  id="frm_nuevo">
       <div class="half left cf">
           <input type="text" placeholder="Título" name="titulo">
-          <input type="text" placeholder="Año" name="anio">
+          <input type="text" placeholder="Descripcion" name="descripcion">
           <input type="text" placeholder="Clasificación" name="rated">
           <input type="text" placeholder="Fecha de lanzamiento" name="fecha_lanz">
           <input type="text" placeholder="Duración (min)" name="duracion">

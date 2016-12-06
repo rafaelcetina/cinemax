@@ -127,68 +127,99 @@ var app = (function() {
 
             var $quantity = $('.quantity'),
                 $numberOfTickets = 0;
+                
+            $quantity.on('focus', function () {
+                // Store the current value on focus and on change
+                previous = this.value;
+                console.log("valor previo: "+previous);
+                
+                }).on('change', function(){
 
-            $quantity.on('change', function(){
+
 
                 var $this = $(this),
                     $ticketType = $this.attr('name'),
                     $total = $this.siblings('.quantity__total'),
                     $price;
-
-                // add on to this variable after every option is selected
-                $numberOfTickets = $numberOfTickets + parseFloat($this.val());
+                
+                if(previous==0){
+                    // add on to this variable after every option is selected
+                    $numberOfTickets = $numberOfTickets + parseFloat($this.val());
+                }else{
+                    $numberOfTickets = $numberOfTickets - previous;
+                    $numberOfTickets = $numberOfTickets + parseFloat($this.val());
+                }
+                
+                previous = this.value;
 
                 // define a new variable to return the amount of tickets for each type (e.g adult, child, senior)
                 var $ticketsByType = parseFloat($this.val());
 
-                $this.parent().parent().prev().text('You\'ve selected '+$numberOfTickets+' '+'tickets');
+                $this.parent().parent().prev().text('Usted ha seleccionado '+$numberOfTickets+' '+'entrada(s)');
 
                 $this.parent().parent().prev().addClass('is-filled');
 
                 if($numberOfTickets > 0) {
-                    _self.$message = 'Please select '+$numberOfTickets+' seats';
+                    _self.$message = 'Por favor, escoja '+$numberOfTickets+' asientos';
                     _self.$messageText.text(_self.$message);
                     _self.$messageElement.addClass('is-visible is-success');
+                }else{
+                    _self.$message = 'Seleccione entradas';
+                    _self.$messageText.text(_self.$message);
+                    _self.$messageElement.addClass('is-visible is-error');
                 }
 
                 switch($ticketType) {
 
                     case 'adult':
-                        $price = 10;
+                        $price = 60;
                         break;
                     case 'senior':
-                        $price = 8;
+                        $price = 40;
                         break;
                     case 'child':
-                        $price = 7;
+                        $price = 20;
                         break;
 
                 }
+                console.log("Ticket type: "+$ticketType);
+                console.log("Primer price: "+$price);
 
                 var $quantity = $('.quantity'),
                     $grandTotal = 0;
 
+                $gtTickets = 0;
+                var price =0;
                 for (var i = 0; i < $quantity.length; i++) {
                     var $totalTickets = Number($quantity.eq(i).val());
 
-                    var $price;
-                    switch($ticketType) {
+                    //$ticketType = $this.attr('name')
+                    console.log($quantity.eq(i).attr('name'));
+                    switch($quantity.eq(i).attr('name')) {
 
                         case 'adult':
-                            $price = 10;
+                            price = 60;
                             break;
                         case 'senior':
-                            $price = 8;
+                            price = 40;
                             break;
                         case 'child':
-                            $price = 7;
+                            price = 20;
                             break;
 
                     }
 
-                    var $subTotal = $price * $totalTickets;
-                    $grandTotal += $subTotal;
+                    console.log("Price: "+price);
+                    var $subTotal = price * $totalTickets;
 
+
+                    $grandTotal += $subTotal;
+                    console.log("St: "+$subTotal);
+                    console.log("TTick: "+$totalTickets);
+                    console.log("Gt: "+$grandTotal);
+
+                    $gtTickets = $gtTickets + $totalTickets;
+                    console.log($gtTickets);
 
                 }
 
@@ -220,7 +251,7 @@ var app = (function() {
 
                     } else {
 
-                        _self.$message = 'Seat is already taken. Try again.';
+                        _self.$message = 'Asiento ocupado. Intenta de nuevo.';
                         _self.$messageText.text(_self.$message);
                         _self.$messageElement.addClass('is-visible is-error');
 
@@ -231,7 +262,7 @@ var app = (function() {
 
                         if($seatsRemaining === 0) {
 
-                            _self.$message = 'You\'ve selected all your seats. Checkout now!';
+                            _self.$message = 'Haz seleccionado todos tus asientos. Realiza el pago!';
                             _self.$messageText.text(_self.$message);
                             if(_self.$messageElement.hasClass('is-error')){
                                 _self.$messageElement.removeClass('is-error');
@@ -240,12 +271,12 @@ var app = (function() {
 
                         } else if($seatsRemaining === 1) {
 
-                            _self.$message = 'You have 1 seat remaining';
+                            _self.$message = 'Aún tienes 1 asiento pendiente';
                             _self.$messageText.text(_self.$message);
 
                         } else if( $seatsRemaining < $numberOfTickets ) {
 
-                            _self.$message = 'You have '+($seatsRemaining)+' seats remaining';
+                            _self.$message = 'Aún tienes '+($seatsRemaining)+' asientos por escojer';
                             _self.$messageText.text(_self.$message);
 
                             if(_self.$messageElement.hasClass('is-error')){
@@ -257,7 +288,7 @@ var app = (function() {
 
                     if($seatsSelected.length > $numberOfTickets) {
 
-                        _self.$message = 'You\'ve chosen all your seats';
+                        _self.$message = 'Haz selecionado todos tus asientos';
                         _self.$messageText.text(_self.$message);
                         $(this).removeClass('seat--selected');
                         if(_self.$messageElement.hasClass('is-success')){
@@ -268,7 +299,7 @@ var app = (function() {
 
                 } else {
 
-                    _self.$message = 'You must select your tickets first';
+                    _self.$message = 'Primero selecciona el número de entradas';
                     _self.$messageText.text(_self.$message);
                     _self.$messageElement.addClass('is-visible is-error');
 
@@ -298,7 +329,7 @@ var app = (function() {
                 numOfTaken = Math.floor( Math.random() * $seats.length );
 
                 for (var i = 0; i < numOfTaken; i++) {
-
+                    //console.log($seats.eq(i));
                     $seats.eq(i).addClass('seat--taken');
 
                 }
@@ -308,7 +339,7 @@ var app = (function() {
         },
 
         checkout: function(){
-
+            
             var $checkout = $('.checkout__button');
 
             $checkout.on('click', function(){
@@ -324,28 +355,36 @@ var app = (function() {
                     switch($ticketCategory) {
 
                         case 'adult':
-                            $price = 10;
+                            $price = 60;
                             break;
                         case 'senior':
-                            $price = 8;
+                            $price = 40;
                             break;
                         case 'child':
-                            $price = 7;
+                            $price = 20;
                             break;
 
                     }
 
                     var $subTotal = $price * $totalTickets;
                     $grandTotal += $subTotal;
-
+                    
 
                 }
+                
 
                 var $seatsSelected = $('.chart__column .js-seat.seat--selected');
+                var $asientos = [];
+                //console.log($seatsSelected.data('id'));
+                $($seatsSelected).each(function(){
+                    console.log($(this).data('id'));
+                    $asientos.push($(this).data('id'));
+                });
+                console.log("Asientos: "+$asientos);
 
                 if( $seatsSelected.length === 0 ) {
 
-                    _self.$message = 'Make sure to select all the movie options!';
+                    _self.$message = 'Asegurate de seleccionar todas las opciones!';
                     _self.$messageText.text(_self.$message);
                     if(_self.$messageElement.hasClass('is-success')){
                         _self.$messageElement.removeClass('is-success');
@@ -354,13 +393,29 @@ var app = (function() {
 
                 } else if($grandTotal > 0) {
 
-                    _self.$message = 'Your total is $'+$grandTotal+'.00. Enjoy your film!';
+                    _self.$message = 'Su total es de $'+$grandTotal+'.00. Disfrute su película!';
                     _self.$messageText.text(_self.$message);
                     if(_self.$messageElement.hasClass('is-error')){
                         _self.$messageElement.removeClass('is-error');
                     }
                     _self.$messageElement.addClass('is-visible is-success');
-
+                    //setTimeout(generaTickets($tt), 3000);
+                    generaTickets($gtTickets);
+                }
+                
+                function generaTickets(tt){
+                    var person = prompt("Por favor, ingresa un nombre", "Harry Potter");
+                    console.log('Generando tickets...'+tt);
+                    console.log($(".is-selected")[1].children[0].children[0].textContent);
+                    $horario = $(".is-selected")[1].children[0].children[0].textContent;
+                    $("#persona").val(person);
+                    $("#asientos").val($asientos);
+                    $("#ntickets").val(tt);
+                    $("#horario").val($horario);
+                    
+                    $( "#btnTickets" ).trigger( "click" );
+                    
+                    
                 }
 
             });

@@ -10,9 +10,12 @@ import include.Pelicula;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.DefaultFileItemFactory;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -39,11 +44,29 @@ public class NuevoPeliculas extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, FileUploadException {
        response.setContentType("text/html;charset=UTF-8");
        
-       String titulo, anio, rated, fecha_lanz, duracion, director, actores, poster, idioma, genero;
-       
+       //String titulo, anio, rated, fecha_lanz, duracion, director, actores, poster, idioma, genero;
+      response.getWriter().println("creando pelicula");
+      
+      List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+      for (FileItem item : items) {
+          if (item.isFormField()) {
+              // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
+              String fieldname = item.getFieldName();
+              String fieldvalue = item.getString();
+              // ... (do your job here)
+          } else {
+              // Process form file field (input type="file").
+              String fieldname = item.getFieldName();
+              String filename = FilenameUtils.getName(item.getName());
+              InputStream filecontent = item.getInputStream();
+              // ... (do your job here)
+          }
+      }
+
+       /*
        titulo= new String(request.getParameter("titulo").getBytes("ISO-8859-1"),"UTF-8");
        
        anio= new String(request.getParameter("anio").getBytes("ISO-8859-1"),"UTF-8");
@@ -66,8 +89,10 @@ public class NuevoPeliculas extends HttpServlet {
        idioma= new String(request.getParameter("idioma").getBytes("ISO-8859-1"),"UTF-8");
        
        genero= new String(request.getParameter("genero").getBytes("ISO-8859-1"),"UTF-8");
-       
-       
+       */ 
+       response.getWriter().println(items);
+       /*
+       response.getWriter().println(titulo);
         
         Pelicula p = new Pelicula(0, titulo, anio, rated, 
                 fecha_lanz, duracion, director, actores, poster, idioma, genero);
@@ -78,7 +103,7 @@ public class NuevoPeliculas extends HttpServlet {
         }else{
             response.getWriter().println("ERROR al crear pelicula");
         }
-        
+        */
         
         
        
@@ -93,11 +118,6 @@ public class NuevoPeliculas extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -107,11 +127,6 @@ public class NuevoPeliculas extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
 
     /**
      * Returns a short description of the servlet.
